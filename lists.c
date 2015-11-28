@@ -128,6 +128,11 @@ movielistaelem *imdbsort(movielistaelem *current)
 	movielistaelem *insert = head;
 	double atlag = 0.0;
 	int i = 0;
+	double tempimdb;
+	int tempid, tempyear;
+	char tempdir[50];
+	char temptitle[50];
+	char tempszereplo[50];
 
 	current = current->NEXT;
 
@@ -140,10 +145,26 @@ movielistaelem *imdbsort(movielistaelem *current)
 
 			if (insert->madat.imdb > current->madat.imdb)
 			{
-				double temp = current->madat.imdb;
-				current->madat.imdb = insert->madat.imdb;
-				insert->madat.imdb = temp;
+				tempimdb = current->madat.imdb;
+				tempid = current->madat.id;
+				tempyear = current->madat.made;
+				strcpy(tempdir, current->madat.dirname);
+				strcpy(temptitle, current->madat.moviename);
+				strcpy(tempszereplo, current->madat.starname);
 
+				current->madat.imdb = insert->madat.imdb;
+				current->madat.id = insert->madat.id;
+				current->madat.made = insert->madat.made;
+				strcpy(current->madat.dirname, insert->madat.dirname);
+				strcpy(current->madat.moviename, insert->madat.moviename);
+				strcpy(current->madat.starname, insert->madat.starname);
+
+				insert->madat.imdb = tempimdb;
+				insert->madat.id = tempid;
+				insert->madat.made = tempyear;
+				strcpy(insert->madat.dirname, tempdir);
+				strcpy(insert->madat.moviename, temptitle);
+				strcpy(insert->madat.starname, tempszereplo);
 			}
 
 			else
@@ -156,17 +177,22 @@ movielistaelem *imdbsort(movielistaelem *current)
 
 	}
 
-	return current;
+	return head;
 
 }
 
-void atlagoljunk(studiolistaelem *studioheader, movielistaelem *moviehead, double tob[], int mennyi[], int size)
+/* Végigmegy a "movie" listán, és az IMDB pontszámoknak fenntartott tömböt feltölti pontszámokkal. A tömb indexe jelöli a stúdiót. 
+   Majd az IMDB tömb elemeit elosztja az adott indexhez tartozó filmmennyiség tömb elemeivel. 
+   Majd kiírja stúdiónként a hozzátartozó IMDB pontszámátlagot */
+
+void atlagoljunk(studiolistaelem *studioheader, movielistaelem *movieheader, double tob[], int mennyi[], int size)
 {
-	movielistaelem *m = moviehead;
+	movielistaelem *m = movieheader;
 	studiolistaelem *s = studioheader;
 	double *atlag = tob;
 	int *annyi = mennyi;
-	int i, n = size;
+	int i, n = size+1;
+	double max = 0.0;
 
 	while (m != NULL)
 	{
@@ -174,7 +200,7 @@ void atlagoljunk(studiolistaelem *studioheader, movielistaelem *moviehead, doubl
 		m = m->NEXT;
 	}
 
-	m = moviehead;
+	m = movieheader;
 
 	for (i = 0; i < n; i++)
 	{
@@ -186,5 +212,7 @@ void atlagoljunk(studiolistaelem *studioheader, movielistaelem *moviehead, doubl
 		printf("-%s: %lf\n", s->sadat.studioname, atlag[s->sadat.studioid]);
 		s = s->next;
 	}
+
+	s = studioheader;
 
 }
