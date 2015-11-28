@@ -1,8 +1,10 @@
 #ifndef LISTS_H_INCLUDED
 #define LISTS_H_INCLUDED
 
+/* STUDIO STUKTÚRA */
+
 typedef struct studio
-{																				//studio struktura
+{
 	char studioname[50];
 	int founded;
 	char hq[50];
@@ -10,15 +12,19 @@ typedef struct studio
 
 } studio;
 
+/* STUDIO LISTA */
+
 typedef struct studiolistaelem 
-{																				//studiolista
+{
 	studio sadat;
 	struct studiolistaelem *next;
 
 } studiolistaelem;
 
+/* FILM STRUKTÚRA */
+
 typedef struct movie 
-{																				//film struktura
+{
 	char moviename[50];
 	int made;
 	double imdb;
@@ -28,12 +34,16 @@ typedef struct movie
 
 } movie;
 
+/* FILM LISTA */
+
 typedef struct movielistaelem 
-{																				//filmlista
+{
 	movie madat;
 	struct movielistaelem *NEXT;
 
 } movielistaelem;
+
+/* FÜGGVÉNYEK */
 
 void filmgyarak(studiolistaelem *studiohead);
 
