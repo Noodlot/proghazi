@@ -25,7 +25,7 @@ int main()
 	char szineszhozza[50];
 	char *s = { "TwelveMonkeys" };
 
-/* DEKLARÁLÁS VÉGE*/
+/* VÉGE:DEKLARÁLÁS*/
 
 /* FILE BEOLVASÁS*/
 
@@ -35,6 +35,7 @@ int main()
 
 	if (fs == NULL)
 		exit(1);
+
 	while (!feof(fs))
 	{
 		studiolistaelem *new = (studiolistaelem *)malloc(sizeof(studiolistaelem));
@@ -44,7 +45,7 @@ int main()
 		strcpy(new->sadat.hq, asdf.hq);
 		new->sadat.studioid = asdf.studioid;
 		if (new->sadat.studioid > studioszam)
-			studioszam = new->sadat.studioid;
+			studioszam++;
 		new->next = slista;
 		slista = new;
 	}
@@ -53,13 +54,15 @@ int main()
 
 /* ÁTLAGSZÁMÍTÁSHOZ */
 
-	double *atlaglista = (double *)malloc(studioszam * sizeof(double));
-	for (i = 0; i < studioszam; i++)
+	studioszam = studioszam + 1;
+
+	double *atlaglista = (double *)malloc(studioszam* sizeof(double));
+	for (i = 0; i < studioszam; i++) 
 	{
 		atlaglista[i] = 0.0;
 	}
 
-	int *hanyfilm = (int *)malloc(studioszam *sizeof(int));
+	int *hanyfilm = (int *)malloc(studioszam*sizeof(int));
 	for (i = 0; i < studioszam; i++)
 	{
 		hanyfilm[i] = 0;
@@ -69,6 +72,7 @@ int main()
 
 	if (fm == NULL)
 		exit(1);
+
 	while (!feof(fm))
 	{
 		movielistaelem *NEW = (movielistaelem *)malloc(sizeof(movielistaelem));
@@ -79,15 +83,19 @@ int main()
 		strcpy(NEW->madat.dirname, fdsa.dirname);
 		strcpy(NEW->madat.starname, fdsa.starname);
 		NEW->madat.id = fdsa.id;
-		hanyfilm[NEW->madat.id]++;
 		NEW->NEXT = mlista;
 		mlista = NEW;
+		int tempid = fdsa.id;
+		for (i = 1; i < studioszam+1; i++)
+		{
+			if (i == tempid)
+			{
+				hanyfilm[i]++;
+			}
+		}
 	}
 
-	mlistaptr = mlista;
-
 /* VÉGE:FILEBEOLVASÁS */
-
 
 /* ELSŐ FELADAT */
 
@@ -109,40 +117,27 @@ int main()
 	printf("\nNegyedik feladat: adjunk hozza egy filmet!:\n");
 	printf("De elobb add meg a film cimet(max 49), aztan a gyartasi evet(egesz), imdb pontszamot(tort), rendezonevet(max 49), foszereplo nevet(max 49), filmgyar azonositojat(1-6)! (enterrel valaszdd el oket)  PLS :3 : \n");
 	scanf("%s\n%d\n%lf\n%s\n%s\n%d", filmhozza, &year, &ajemdibi, rendezohozza, szineszhozza, &azon);
-	mlista = filmhozzaadas(mlista, filmhozza, year, ajemdibi, rendezohozza, szineszhozza, azon);
 
-/* HATODIK FELADAT */
+	for (i = 1; i < studioszam+1; i++)
+	{
+		if (i == azon)
+		{
+			hanyfilm[i]++;
+		}
+	}
+
+	mlista = filmhozzaadas(mlista, filmhozza, year, ajemdibi, rendezohozza, szineszhozza, azon);
+	mlistaptr = mlista;
+
+/* ÖTÖDIK FELADAT */
 
 	printf("\nOtodik feladat: Irjuk ki ki rendezte az alabbi filmet: (Adj meg egy filmet)!\n\n");
 	kirendezte(mlista,s);
 
-/* ELLENŐRZŐ KIÍRÁS */
-
-	while (mlista != NULL)
-	{
-		movielistaelem *p = mlista->NEXT;
-		printf("%s\n%d\n%.1f\n%s\n%s\n%d\n", mlista->madat.moviename, mlista->madat.made, mlista->madat.imdb, mlista->madat.dirname, mlista->madat.starname, mlista->madat.id);
-		mlista = p;
-	}
-
-	mlista = mlistaptr;
-
 /* HATODIK FELADAT */
 
-	printf("\nHatodik feladat: Rendezzük a filmeket IMDB pontszam szerint, majd adjuk meg melyik studio filmjeinek a legnagyobb az imd-pontszám átlaga, majd ezeket írjuk ki egy fileba!\n\n");
+	printf("\nHatodik feladat: Rendezzük a filmeket IMDB pontszam szerint, majd írjuk ki egy file-ba rendezve a filmeket! Ezenkívül adjuk meg a stúdiók által elkészített filmek összesített IMDB átlagát.\n\n");
 	imdbsort(mlista);
-
-/* ELLENŐRZŐ KIÍRÁS */
-
-	while (mlista != NULL)
-	{
-		movielistaelem *p = mlista->NEXT;
-		printf("%s\n%d\n%.1f\n%s\n%s\n%d\n", mlista->madat.moviename, mlista->madat.made, mlista->madat.imdb, mlista->madat.dirname, mlista->madat.starname, mlista->madat.id);
-		mlista = p;
-	}
-
-	mlistaptr = mlista;
-
 	atlagoljunk(slista, mlista, atlaglista, hanyfilm, studioszam);
 
 /* FILEBA KIÍRÁS */
@@ -155,7 +150,6 @@ int main()
 		fprintf(fki, "%s\n%d\n%.1f\n%s\n%s\n%d\n", mlista->madat.moviename, mlista->madat.made, mlista->madat.imdb, mlista->madat.dirname, mlista->madat.starname, mlista->madat.id);
 		mlista = p;
 	}
-	mlista = mlistaptr;
 
 /* LEZÁRÁS ÉS FELSZABADÍTÁS */
 
@@ -166,3 +160,26 @@ int main()
 	fclose(fs);
 	return 0;
 }
+
+/* 
+ELLENŐRZŐ KIÍRÁSOK
+
+while (mlista != NULL)
+{
+	movielistaelem *p = mlista->NEXT;
+	printf("%s\n%d\n%.1f\n%s\n%s\n%d\n", mlista->madat.moviename, mlista->madat.made, mlista->madat.imdb, mlista->madat.dirname, mlista->madat.starname, mlista->madat.id);
+	mlista = p;
+}
+
+mlista = mlistaptr;
+
+
+for (i = 1; i < studioszam; i++)
+{
+printf(" %d,", hanyfilm[i]);
+}
+for (i = 1; i < studioszam; i++)
+{
+printf(" %lf,", atlaglista[i]);
+}
+*/
