@@ -6,28 +6,34 @@
 int main() 
 {
 
-/* DEKLARÁLÁS */
+/* DEKLARALAS */
 
+	studiolistaelem *slistatxt = NULL;
 	studiolistaelem *slista = NULL;
-	studiolistaelem *slistaptr;
+	studiolistaelem *uj;
 	studio asdf;
+
 	movielistaelem *mlista = NULL;
 	movielistaelem *mlistaptr;
+	movielistaelem *NEW;
 	movie fdsa;
 
 	int studioszam = 0, i;
 	int year, azon = 0;
+	int *hanyfilm;
+	int tempid;
 
 	double ajemdibi = 0.0;
+	double *atlaglista;
 
 	char filmhozza[50];
 	char rendezohozza[50];
 	char szineszhozza[50];
 	char *s = { "TwelveMonkeys" };
 
-/* VÉGE:DEKLARÁLÁS*/
+/* VEGE:DEKLARALAS*/
 
-/* FILE BEOLVASÁS*/
+/* FILE BEOLVASAS*/
 
 	FILE *fm = fopen("Movies.txt", "r");
 	FILE *fs = fopen("Studios.txt", "r");
@@ -38,44 +44,42 @@ int main()
 
 	while (!feof(fs))
 	{
-		studiolistaelem *new = (studiolistaelem *)malloc(sizeof(studiolistaelem));
+		uj = (studiolistaelem *)malloc(sizeof(studiolistaelem));
 		fscanf(fs, "%s\n%d\n%s\n%d", asdf.studioname, &asdf.founded, asdf.hq, &asdf.studioid);
-		strcpy(new->sadat.studioname, asdf.studioname);
-		new->sadat.founded = asdf.founded;
-		strcpy(new->sadat.hq, asdf.hq);
-		new->sadat.studioid = asdf.studioid;
-		if (new->sadat.studioid > studioszam)
+		strcpy(uj->sadat.studioname, asdf.studioname);
+		uj->sadat.founded = asdf.founded;
+		strcpy(uj->sadat.hq, asdf.hq);
+		uj->sadat.studioid = asdf.studioid;
+		if (uj->sadat.studioid > studioszam)
 			studioszam++;
-		new->next = slista;
-		slista = new;
+		uj->next = slistatxt;
+		slistatxt = uj;
 	}
 
-	slistaptr = slista;
-
-/* ÁTLAGSZÁMÍTÁSHOZ */
+/* ATLAGSZAMITASHOZ */
 
 	studioszam = studioszam + 1;
 
-	double *atlaglista = (double *)malloc(studioszam* sizeof(double));
+	atlaglista = (double *)malloc(studioszam* sizeof(double));
 	for (i = 0; i < studioszam; i++) 
 	{
 		atlaglista[i] = 0.0;
 	}
 
-	int *hanyfilm = (int *)malloc(studioszam*sizeof(int));
+	hanyfilm = (int *)malloc(studioszam*sizeof(int));
 	for (i = 0; i < studioszam; i++)
 	{
 		hanyfilm[i] = 0;
 	}
 
-/* VÉGE:ÁTLAG */
+/* VEGE:ATLAG */
 
 	if (fm == NULL)
 		exit(1);
 
 	while (!feof(fm))
 	{
-		movielistaelem *NEW = (movielistaelem *)malloc(sizeof(movielistaelem));
+		NEW = (movielistaelem *)malloc(sizeof(movielistaelem));
 		fscanf(fm, "%s\n%d\n%lf\n%s\n%s\n%d\n", fdsa.moviename, &fdsa.made, &fdsa.imdb, fdsa.dirname, fdsa.starname, &fdsa.id);
 		strcpy(NEW->madat.moviename, fdsa.moviename);
 		NEW->madat.made = fdsa.made;
@@ -85,7 +89,7 @@ int main()
 		NEW->madat.id = fdsa.id;
 		NEW->NEXT = mlista;
 		mlista = NEW;
-		int tempid = fdsa.id;
+		tempid = fdsa.id;
 		for (i = 1; i < studioszam+1; i++)
 		{
 			if (i == tempid)
@@ -95,14 +99,19 @@ int main()
 		}
 	}
 
-/* VÉGE:FILEBEOLVASÁS */
+/* VEGE:FILEBEOLVASAS */
 
-/* ELSŐ FELADAT */
+/* STUDIOTXT FILE KIMENTESE BINARISBA, MAJD A BINARISBOL A STUDIOLISTA LETREHOZASA */
 
-	printf("\nElso feladat: Irjuk ki milyen studiók vannak!:\n\n");
+	//savetofile(slistatxt);
+	slista = loadfromfile(slista);
+
+/* ELSO FELADAT */
+
+	printf("\nElso feladat: Irjuk ki milyen studiOk vannak!:\n\n");
 	filmgyarak(slista);
 
-/* MÁSODIK FELADAT */
+/* MASODIK FELADAT */
 
 	printf("\nMasodik feladat: Irjuk ki studionkent a filmeket!:\n\n");
 	studiofilmei(slista, mlista);
@@ -129,18 +138,18 @@ int main()
 	mlista = filmhozzaadas(mlista, filmhozza, year, ajemdibi, rendezohozza, szineszhozza, azon);
 	mlistaptr = mlista;
 
-/* ÖTÖDIK FELADAT */
+/* OTODIK FELADAT */
 
 	printf("\nOtodik feladat: Irjuk ki ki rendezte az alabbi filmet: (Adj meg egy filmet)!\n\n");
 	kirendezte(mlista,s);
 
 /* HATODIK FELADAT */
 
-	printf("\nHatodik feladat: Rendezzük a filmeket IMDB pontszam szerint, majd írjuk ki egy file-ba rendezve a filmeket! Ezenkívül adjuk meg a stúdiók által elkészített filmek összesített IMDB átlagát.\n\n");
+	printf("\nHatodik feladat: Rendezzuk a filmeket IMDB pontszam szerint, majd irjuk ki egy file-ba rendezve a filmeket! Ezenkivul adjuk meg a studiok altal elkeszitett filmek osszesitett IMDB atlaat.\n\n");
 	imdbsort(mlista);
 	atlagoljunk(slista, mlista, atlaglista, hanyfilm, studioszam);
 
-/* FILEBA KIÍRÁS */
+/* FILEBA KIIRÁS */
 
 	if (fki == NULL)
 		exit(1);
@@ -151,7 +160,7 @@ int main()
 		mlista = p;
 	}
 
-/* LEZÁRÁS ÉS FELSZABADÍTÁS */
+/* LEZARAS ÉS FELSZABADITAS */
 
 	free(slista);
 	free(mlista);
@@ -162,7 +171,7 @@ int main()
 }
 
 /* 
-ELLENŐRZŐ KIÍRÁSOK
+ELLENORZŐ KIIRASOK
 
 while (mlista != NULL)
 {
