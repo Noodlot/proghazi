@@ -59,4 +59,8 @@ movielistaelem *imdbsort(movielistaelem *current);
 
 void atlagoljunk(studiolistaelem *studioheader, movielistaelem *moviehead, double tob[], int mennyi[], int size);
 
+void savetofile(studiolistaelem *eleje);
+
+studiolistaelem *loadfromfile(studiolistaelem *eleje);
+
 #endif
