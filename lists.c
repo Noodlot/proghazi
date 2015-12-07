@@ -116,7 +116,7 @@ void kirendezte(movielistaelem *moviehead, char *title)
 	}
 
 	if (loop)
-		printf("Nincs ilyen film. Biztos vagy benne, hogy jó címet adtál meg?\n");
+		printf("Nincs ilyen film. Biztos vagy benne, hogy jo cimet adtal meg?\n");
 
 }
 
