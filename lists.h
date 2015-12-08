@@ -1,7 +1,7 @@
 #ifndef LISTS_H_INCLUDED
 #define LISTS_H_INCLUDED
 
-/* STUDIO STUKTÚRA */
+/* STUDIO STUKTURA */
 
 typedef struct studio
 {
@@ -21,7 +21,7 @@ typedef struct studiolistaelem
 
 } studiolistaelem;
 
-/* FILM STRUKTÚRA */
+/* FILM STRUKTURA */
 
 typedef struct movie 
 {
@@ -43,7 +43,7 @@ typedef struct movielistaelem
 
 } movielistaelem;
 
-/* FÜGGVÉNYEK */
+/* FUGGVENYEK */
 
 void filmgyarak(studiolistaelem *studiohead);
 
@@ -58,9 +58,5 @@ void kirendezte(movielistaelem *moviehead, char *title);
 movielistaelem *imdbsort(movielistaelem *current);
 
 void atlagoljunk(studiolistaelem *studioheader, movielistaelem *moviehead, double tob[], int mennyi[], int size);
-
-void savetofile(studiolistaelem *eleje);
-
-studiolistaelem *loadfromfile(studiolistaelem *eleje);
 
 #endif
