@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lists.h"
+#include "bin.h"
 
 /* Végigmegy a "studio" fésűs listán, és kiírja a stúdiók nevét. */
 
@@ -98,7 +99,6 @@ void kirendezte(movielistaelem *moviehead, char *title)
 {
 	movielistaelem *m = moviehead;
 	int loop = 1;
-	int nope = 0;
 
 	while (loop)
 	{
@@ -126,8 +126,7 @@ movielistaelem *imdbsort(movielistaelem *current)
 {
 	movielistaelem *head = current;
 	movielistaelem *insert = head;
-	double atlag = 0.0;
-	int i = 0;
+
 	double tempimdb;
 	int tempid, tempyear;
 	char tempdir[50];
@@ -192,7 +191,6 @@ void atlagoljunk(studiolistaelem *studioheader, movielistaelem *movieheader, dou
 	double *atlag = tob;
 	int *annyi = mennyi;
 	int i, n = size+1;
-	double max = 0.0;
 
 	while (m != NULL)
 	{
