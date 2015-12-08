@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lists.h"
+#include "bin.h"
 
 int main() 
 {
@@ -14,7 +15,6 @@ int main()
 	studio asdf;
 
 	movielistaelem *mlista = NULL;
-	movielistaelem *mlistaptr;
 	movielistaelem *NEW;
 	movie fdsa;
 
@@ -136,11 +136,10 @@ int main()
 	}
 
 	mlista = filmhozzaadas(mlista, filmhozza, year, ajemdibi, rendezohozza, szineszhozza, azon);
-	mlistaptr = mlista;
 
 /* OTODIK FELADAT */
 
-	printf("\nOtodik feladat: Irjuk ki ki rendezte az alabbi filmet: (Adj meg egy filmet)!\n\n");
+	printf("\nOtodik feladat: Irjuk ki ki rendezte az alabbi filmet: Twelve Monkeys\n\n");
 	kirendezte(mlista,s);
 
 /* HATODIK FELADAT */
