@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "lists.h"
+#include "bin.h"
 
 int studioszam = 0;
 
